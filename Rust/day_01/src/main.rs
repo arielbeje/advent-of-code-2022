@@ -7,7 +7,7 @@ fn main() {
         .strip_suffix('\n')
         .expect("Input is empty after stripping ending newline");
 
-    let max_calorie_count = day_input
+    let mut per_elf_calories: Vec<u32> = day_input
         .split("\n\n")
         .map(|block| -> u32 {
             block
@@ -15,8 +15,15 @@ fn main() {
                 .map(|count| u32::from_str(count).expect("Failed to parse calorie count"))
                 .sum()
         })
-        .max()
-        .expect("Couldn't find blocks split by 2 newlines");
+        .collect();
+    per_elf_calories.sort_by(|a, b| b.cmp(a));
 
-    println!("{:?}", max_calorie_count);
+    let top_three_elves_calories: u32 = per_elf_calories
+        .chunks_exact(3)
+        .next()
+        .expect("Couldn't find the top 3 elves")
+        .iter()
+        .sum();
+
+    println!("{:?}", top_three_elves_calories);
 }
